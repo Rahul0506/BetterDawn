@@ -2,17 +2,10 @@ import * as THREE from 'three'
 import { Suspense, useState, useRef, useEffect, useLayoutEffect, useMemo } from 'react'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { SVGLoader } from 'three-stdlib'
+import { OrbitControls } from '@react-three/drei'
 
 import ClippedControls from './ClippedCamera'
-
-function Box() {
-    return (
-        <mesh>
-            <boxBufferGeometry attach="geometry" />
-            <meshLambertMaterial attach="material" color="hotpink" />
-        </mesh>
-    )
-}
+import Squad from './squad/Squad'
 
 function Cell({ color, shape, fillOpacity }) {
   const [hovered, hover] = useState(false)
@@ -48,14 +41,18 @@ function Svg({ url }) {
 
 export default function App() {
     return (
-        <Canvas frameloop="demand" orthographic camera={{ position: [0, 0, 10], zoom: 3, up: [0, 0, 1], far: 10000 }}>
+        <Canvas orthographic camera={{ position: [0, 0, 40], zoom: 3, up: [0, 0, 1], far: 10000 }}>
             <Suspense fallback={null}>
                 <Svg url="/map.svg" />
             </Suspense>
             <ClippedControls />
-            <ambientLight intensity={0.3} />
 
-            <Box />
+            <ambientLight intensity={0.3} />
+            <directionalLight position={[10, 0, 5]} />
+
+            <Squad scale={2} position={[0, 0, 16]} rotation={[Math.PI / 2, 0, 0]}/>
+            <Squad scale={2} position={[20, 20, 16]} rotation={[Math.PI / 2, 0, 0]}/>
         </Canvas>
     )
 }
+

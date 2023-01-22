@@ -12,13 +12,9 @@ export default function ClippedControls() {
     const ZOOM_MAX = 20
 
     const clipChange = () => {
-        console.log(camera.position, camera.zoom)
-
         camera.zoom = Math.min(Math.max(camera.zoom, ZOOM_MIN), ZOOM_MAX)
         camera.position.clamp(MIN_DIM, MAX_DIM)
         controlsRef.current.target = camera.position
-
-        console.log(camera.position, camera.zoom)
     }
 
     return (
