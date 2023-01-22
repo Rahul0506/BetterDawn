@@ -3,11 +3,9 @@ import { Suspense, useState, useRef, useEffect, useLayoutEffect, useMemo } from 
 import { Canvas, useLoader } from '@react-three/fiber'
 import { SVGLoader } from 'three-stdlib'
 
-import ClippedControls from './ClippedCamera'
-import InterfaceUI from './components/ui/Interface'
-// import { Svg } from './components/three/Map'
+// import ClippedControls from '../../ClippedCamera'
 
-function Box() {
+export function Box() {
     return (
         <mesh>
             <boxBufferGeometry attach="geometry" />
@@ -16,7 +14,7 @@ function Box() {
     )
 }
 
-function Cell({ color, shape, fillOpacity }) {
+export function Cell({ color, shape, fillOpacity }) {
   const [hovered, hover] = useState(false)
   return (
     <mesh onPointerOver={(e) => hover(true)} onPointerOut={() => hover(false)}>
@@ -26,7 +24,7 @@ function Cell({ color, shape, fillOpacity }) {
   )
 }
 
-function Svg({ url }) {
+export function Svg({ url }) {
   const { paths } = useLoader(SVGLoader, url)
   const shapes = useMemo(
     () => paths.flatMap((p) => p.toShapes(true).map((shape) => ({ shape, color: p.color, fillOpacity: p.userData.style.fillOpacity }))),
@@ -46,21 +44,4 @@ function Svg({ url }) {
       ))}
     </group>
   )
-}
-
-export default function App() {
-    return (
-      <>
-        <InterfaceUI />
-        <Canvas frameloop="demand" orthographic camera={{ position: [0, 0, 10], zoom: 3, up: [0, 0, 1], far: 10000 }}>
-            <Suspense fallback={null}>
-                <Svg url="/map.svg" />
-            </Suspense>
-            <ClippedControls />
-            <ambientLight intensity={0.3} />
-
-            <Box />
-        </Canvas>
-      </>
-    )
 }
